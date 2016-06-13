@@ -1,0 +1,108 @@
+Tipps
+=====
+- kommt immer dran:
+    - Mikrofone
+    - Vorverarbeitung
+    - HMM, zb
+        - Def HMM
+        - 3 Probleme + Loesungen
+    - Fundamentalformel
+- Literatur benutzen
+- general & life advice
+    - praezise antworten
+    - denken, dann reden (schlechter: erst falsch und dann korrigieren)
+    - Wenn man absolut keinen Plan hat, dann sagen sonst wird 10min hergeleitet
+    - 1.0 guy sagt:
+        - Zuhoeren und Pruefer ausreden lassen
+        - denken
+        - Satz formulieren, der genau die Frage beantwortet
+        - antworten
+
+Intro
+======
+- Def ASR
+- Ist Spracherkennung eher einfach oder schwierig? und wieso?
+
+- Mensch
+    - Wie funktioniert der menschliche Sprachapparat?
+    - Wie wird Sprache erzeugt?
+    - Schwingt die Stimmritze immer?
+    - Auch Gehoerschnecke und so... ALLL OF IIIITT
+    - Vokale Konsonanten Unterschied
+    - stimmhafte Konsonanten?
+    - Vokale durch was moduliert
+    - Konsonanten durch was moduliert
+    - Warum vibrieren Stimmbaender?
+    - Welche lautlichen Einheiten gibt es
+
+- Mikrofon
+    - Unterteilung und Unterschiede
+    - Wann was verwenden
+    - Abtastfrequenz
+    - Spielt beim Kondensatorm. Druck oder Energie des Schalls eine Rolle?
+    - Digitalisierung (Diskretisierung & Quantisierung)
+        - Welche Frequenzen wann wo? (wat)
+        - Wie viele Quantisierungsstufen?
+            - Welchen Effekt? (Rauschen)
+        - Wo liegt menschliche Hoerschwelle?
+        - Welchen Schalldruckpegel hat menschliche Sprache normalerweise?
+        -  u-law
+        - Wo besser aufloesen? (oberer (lauter) Bereich)
+
+
+Vorverarbeitung
+================
+- Was sind die einzelnen Schritte einer typischen Vorverarbeitung?
+- Alles superdupi erklaeren
+- DFT
+    - Wieso Betrag nehmen?
+- Fensterung
+    - Wieso 10ms Verschiebung?
+    - Arten von Fenstern
+    - Wie viele Vektoren hat man in einem Fenster?
+    - Wieso nicht Rechtecksfenster? Formel dazu (vgl Faltung = sinc)
+    - Wieso 16ms Groesse gut?
+        - bei 16khz sind das 256 Samples => gut fuer FFT
+- Warum Mel-Skalierung?
+- Warum Logarithmierung?
+- Warummmm
+- Wieso Phase unwichtig? (Daten sparen & menschl. Wahrnehmung)
+- Cepstrum
+    - Hinmalen und beschreiben
+    - Welche Frequenzen wegschmeißen?
+
+Spracherkennung
+===============
+- Moegliche Ansaetze erklaeren (det., stoch.) + Schaubild
+- Fundamentalformel mit Bestandteilen erklaeren
+    - Was kann man weglassen und wieso?
+
+Akustisches Modell
+==================
+- Was wird verwendet?
+- HMM Definition
+- 3 Probleme + Loesungen (Formeln + Algorithmen koennen)
+    - gamma bei Viterbi erklaeren
+    - Was ist Training? Was ware wuenschenswert? (Max Lik)
+    - Wie Parameter bei EM-Algorithmus fuer gauss mix. initialisieren?
+- Wieso EM nicht gut?
+- Was fuer kont. HMMs
+
+Sprachmodell
+============
+- Was nehmen?
+- Wie P(w1w2...wN) schaetzen?
+    - Warum nicht direkt?
+- Probleme (+ Loesungen)?
+- Was ist
+    - Backoff
+    - Discounting
+    - Interpolation
+
+Suche
+=====
+- zeitsynchron vs asynchron?
+- A*
+- Welche Heuristiken fuer Spracherkennung?
+- Strahlsuche? Viterbi Strahlsuche?
+- Warum suchen wir nach der besten Zustandsfolge?

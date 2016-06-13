@@ -1,0 +1,104 @@
+Intro
+=====
+
+- Anwendungen
+    -   Mensch-Maschine-/Mensch-Roboter-Interaktion
+        -  Um mit Anwendern zu interagieren ist Sehen ziemlich wichtig
+        -  Auch Wahrnehmung/Interpretation von Gesten, Affekt, Mimik, ...
+
+    -   Smart Houses / Assisted Living
+    -   Smart Cars (Blickrichtung, Aufmerksamkeit, Fußgängererkennung)
+    -   Smart Rooms (Wo ist wer im Meeting, Analyse)
+    -   Smart Homes (z.B. Monitoring von Patienten während dem Schlaf)
+    -   Assistive Technologie für Blinde
+- Auf wlcher Ebene, wann und wie werden Informationen zusammengeführt
+  in einem System, von verschiedenen Verfahren gesammelt. (Zb face + pose + ...)
+
+Face Detection
+==============
+- Probleme (lighting, illumination, pose, occlusions)
+- Color-based
+    - parametric vs non-parametric
+    - Histogram Backprojection
+    - GMM
+    - Bayes
+    - Farbräume
+- Feature-based
+    - Ellipsis
+    - Eigenfaces / Fisherfaces
+    - ANN
+    - Evaluationsmaß ROC, AUC
+    - Viola & Jones
+        - rotierte Gesichter? Rotierte Gesichter in Trainingsdaten verwenden.
+          => Diskrete Winkel
+- DCT wie Koeffizienten bekommen? (Gewichtung der Frequenzen)
+- Vergleich auch z.B. was besser bei occlusion, pose variation?
+
+Face Recognition
+================
+- feature-based (facial features finden, zB Abstand der Augen)
+  vs appearance-based (Aussehen)
+- holistic (ganzes Gesicht zur Erkennung)
+  vs local (lokal auf Features, z.B. PCA auf Augen, Mund,... oder Bild in
+  Teilsektionen aufteilen; robuster)
+- Problemstellungen (open, closed, verification)
+- AAM
+- DCT
+- LBP
+- Eigenfaces / Fisherfaces
+    - PCA vs LDA
+        - PCA Hauptziel? Gesichter können gut rekonstruiert werden
+        - Robuster gegen illumination: Eigenfaces mit größten Eigenwerten
+          wegwerfen, Bild vorher normalisieren (Histogram EQ)
+
+Deep Learning
+=============
+- (Neues Thema? nix in Protokollen)
+- ConvNets
+
+Facial Expression Recognition
+=============================
+- Ekman
+- FACS
+- Action Units
+- HMM
+
+Head Pose Estimation
+====================
+- ASM
+- ANN
+- 3D Fitting
+
+People Detection
+================
+- global vs local
+- HOG
+    - Wenn hier oben Kamera, würde HOG anschlagen? Nein, weil von Tisch verdeckt)
+- ISM
+- Champfer Silhouette Matching
+- Mohan
+- Welche Detektoren gibt es neben Harris-Corner noch?
+
+Tracking
+========
+- Kalman (= linear state propagation, analytisch)
+- Particle (= beliebige propagation, numerisch)
+    - Condensational Algorithm (Isard & Blake 1998)
+    - wie Hypothesen gewichtet?
+- Beide haben motion/observation model und predict-update cycle
+    - motion/observation model Zeichnen
+- Mean-Shift
+- Foreground-Background
+- Template Matching
+
+Gesture Recognition
+===================
+
+Action Recognition
+==================
+- HMM
+- Bag-of-Words
+- Template Matching
+- Space-time Interest Points
+    - Besonderheit?
+- Laptevs Action Features
