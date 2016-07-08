@@ -83,3 +83,15 @@ First/Follow berechnen oft in Prüfung
 - ✓ LR(1): Weil LALR(1) auch geht
 
 
+# Blatt 9
+
+## 1 - Ungewöhnliche Fixpunkte
+
+a) von $$ \mathbb{N} \to \mathbb{N} : f(z) = z$$ aber $$ f(\bot) = 0$$
+
+b) man brauch Verband unendlicher Höhe (wg Satz "In einem Verband endlicher Höhe M hat jede monotone Funktion f einen
+kleinsten Fixpunkt") Natürliche Zahlen, (+ n 1) als Funktion, unendlich als Supremum, Top "unendlich + 1" als kleinsten Fixpunkt
+
+## 2 - Datenflussanalyse
+
+2.1 Kann man auch mit top initialisieren und sich von oben annähren? schon, aber dann findet man die größten Fixpunkte, nicht die kleinsten. Aber: das Ergebnis ist bei jedem Schritt richtig, wenn man von bot anfängt dann nur am Ende. D.h. man könnte Analyse in der Mitte abbrechen (Aus Gründen der Zeit oder whatev)

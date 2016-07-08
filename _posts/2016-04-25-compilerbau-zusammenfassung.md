@@ -1,16 +1,26 @@
 ---
 layout: post
-title:  "Sprachtechnologie und Compiler (SS 2016, Prof. Snelting)"
+title:  "Sprachtechnologie und Compiler"
 date:   2016-04-26 00:00:00 +0100
-categories: posts
+categories: posts zusammenfassung
+multipage: true
 ---
+
+![Darum geht's](../../media/ueberblick.png)
+
+Semester: SS 2016
+
+Dozent: Prof. Snelting
 
 $$\DeclareMathOperator{\syn}{syn}
 \DeclareMathOperator{\inh}{inh}
 \DeclareMathOperator{\AF}{AF}
-\DeclareMathOperator{\adr}{adr}$$
+\DeclareMathOperator{\adr}{adr}
+\DeclareMathOperator{\llbracket}{[\![}
+\DeclareMathOperator{\rrbracket}{]\!]}$$
 
-### Wozu?
+
+### Wozu Sprachtechnologie?
 
 - Compiler
 - Entwicklungswerkzeuge (zB Semantische Analyse in der IDE)
@@ -18,29 +28,33 @@ $$\DeclareMathOperator{\syn}{syn}
 - Beschreibung von Daten (HTML, XML)
 - Hardware-Entwicklung (VHDL)
 
-#### Zielkriterien
+#### Zielkriterien für Compiler
 
-- korrekt
-- schnelle Kompilierung
-- kompiliertes Programm ist schnell/klein/energiesparsam
-- gute UX (zB hilfreiche Fehlermeldungen)
+- Compilation
+    - korrekt
+    - schnell
+- erzeugtes Programm
+    - schnell
+    - klein
+    - energiesparend
+- UX
+    - hilfreiche Fehlermeldungen
 
 ### Unterarten
 
 - Reiner Interpreter (Bash)
 - Zwischencode-Interpreter (Java, Python)
-- Vollständige Übersetzung (C, C++)
 - JIT-Compiler (JVM)
-
-![Darum geht's](../../media/ueberblick.png)
+- Vollständige Übersetzung (C, C++)
 
 
 Lexikalische Analyse
 ====================
 
+Bezeichnung: *Lexer*, *Scanner* oder *Tokenizer*
+
 - [ Lexer von `clang`](https://github.com/llvm-mirror/clang/blob/4a65931dcba82b23856d654eb77d133d0a3c59f2/lib/Lex/Lexer.cpp#L2931) (+ [doxygen docs](http://clang.llvm.org/doxygen/Lexer_8h.html) dazu)
 
-Name: *Lexer* = *Scanner* = *Tokenizer*
 
 ## Endlicher Automat
 
@@ -77,7 +91,7 @@ Wie unterscheiden zwischen Schlüsselwort (`int`) und Bezeichner (`myint`)?
 
 ## Implementierungstechniken
 
-#### Als Datenstruktur
+### Als Datenstruktur
 
 - Einfacher, übersichtlicher
 - Code für Aktionen umständlich
@@ -287,7 +301,7 @@ $$LL(k)$$-Grammatik
     Wenn nun $$\{k : \gamma\} = \{k : \gamma'\}$$ so ist $$\nu = \omega$$.
 
 $$SLL(k)$$-Grammatik
-: Wie oben, nur dass die Vergangenheiten/Stackinhalt[?] unterschiedlich sein dürfen: $$\mu \neq \mu'$$ erlaubt.
+: Wie oben, nur dass die Vergangenheiten/Stackinhalt[?] unterschiedlich sein dürfen ($$\mu \neq \mu'$$ erlaubt).
 
 $$k$$-Präfix
 : erste $$k$$ Zeichen von Terminalfolge, aufgefüllt mit $$\verb§(#)§$$.
@@ -332,24 +346,23 @@ $$SLL(k)$$-Bedingung
 
     $$\text{Follow}_1(A) \cap \text{First}_1(\alpha') = \emptyset$$
 
-Beispiel für $$G \notin LL(1)$$, aber $$G \in LL(2)$$:
-
-- $$S \to \verb#aAab \vert bAbb#$$
-- $$A \to \epsilon \verb# \vert a#$$
-- ist nicht in $$SLL(2)$$ wegen Abhängigkeit zur Vergangenheit
+Ein Beispiel für eine $$G \notin LL(1)$$, $$G \notin SLL(2)$$ aber $$G \in LL(2)$$ ist gegeben mit den Regeln $$S \to \verb#aAab# \vert \verb#bAbb#$$ und $$A \to \epsilon \vert \verb#a#$$.
 
 ### Linksfaktorisierung
 Folgende Grammatik ist für kein $$k$$ $$LL(k)$$.
 
-$$S \to X$$ \
-$$X \to Yc \vert Yd$$ \
+$$S \to X$$
+
+$$X \to Yc \vert Yd$$
+
 $$Y \to a \vert bY$$
 
-(Ein Wort ist dann sowas wie bbbbc => unendliche Vorausschau)
+(Ein Wort ist dann sowas wie $$\verb§bbbbc§$$ => unendliche Vorausschau)
 
 => gemeinsamen Anfang $$X$$ ausklammern:
 
-$$X -> YX'$$ \
+$$X \to YX'$$
+
 $$X' \to c \vert d$$
 
 ### Linksrekursion
@@ -364,20 +377,18 @@ $$X' \to c \vert d$$
     - $$LL[X, a] = X \to X_1 \dots X_n \in P$$, falls $$a \in\text{First}_1( X \to X_1 \text{Follow}_1(X))$$, sonst Fehler
     - Mehr als 1 mögl. Produktion => kein $$LL(1)$$
 - Konstruktion mit $$\text{First}_1( X \to X_1 \text{Follow}_1(X))$$ Mengen
-- Zur Konfliktlösug bei *Dangling Else* Produktion manuell aus Tabelle entfernen
+- Zur Konfliktlösung bei *Dangling Else* Produktion manuell aus Tabelle entfernen
     - => else gehört immer zum letzten if
 
 ![](../../media/table-based-llk-parser.png)
 
 ### $$LL(1)$$-Parserprogramm
 ```c
-push('#');
-push(S);
+push('#', S);
 t = next_token();
 
 while (true) {
-    e = top();
-    pop();
+    e = pop();
 
     if (e in T) { // Vergleiche
         if (t != e)
@@ -385,13 +396,13 @@ while (true) {
         if (stackEmpty())
             break; // Akzeptiere
         t = next_token();
-    } else { // Vorhersage
+    }
+    else { // Vorhersage
         entry = LL[e, t];
         if (entry == ERROR)
             abort("illegal symbol " + t);
-        (X ---> X_0 . . . X_n) = entry;
-        for (i = n; i >= 0; --i)
-            push(X_i);
+        (X → X_0 ... X_n) = entry;
+        push(X_n, X_n-1, ..., X_0);
     }
 }
 ```
@@ -504,7 +515,7 @@ while (true) {
             break;
 
         case Reduce r:
-            (A -> b) = productions[r];
+            (A → b) = productions[r];
             for (i = 0; i < len(b); ++i) {
                 // b runterschmeissen
                 pop();
@@ -998,7 +1009,7 @@ Wieso Zwischensprachen? -- Nur n+m statt n*m Frontend-Backend-Kombinationen notw
 <tr>
 <td>Plattformunabhängiger</td>
 <td>Zielsprache</td>
-<td>zum Austausch geeignet (`.class`)</td>
+<td>zum Austausch geeignet (<code>.class</code>)</td>
 <td>Java, .NET, Dalvik</td>
 </tr>
 </table>
@@ -1319,31 +1330,333 @@ void p() {
 
 
 
-
-
-
 # Optimierung
 
+watwat
+
+Halbordnung
+: $$(M, \leq)$$ ist *Halbordnung* $$\iff \leq$$ ist Äquivalenzrelation (reflexiv, transitiv, antisymmetrisch)
+
+wat wat
+
+Supremum
+: $$\sqcup z \iff$$ jedes andere sup ist größer
+
+Infimum
+: $$\sqcap z \iff$$ jedes andere inf ist kleiner
+
+das
+
+- Halbordnung $$(M, \leq)$$ ist *Verband* $$\iff$$ für je zwei Elemente $$x, y \in M$$ stets gilt $$x \sqcup y$$ und $$x \sqcap y$$.
+
+- $$(M, \sqcap, \sqcup$$ ist Verband $$\iff$$ *Dinge* gelten
+
+Potenzmengen sind Verbände
+
+S. 516: Quiz: Verband oder Halbordnung?
+
+von links nach rechts und oben nach unten:
+
+V,(flacher) V, (flacher) V, V
+
+V, V, HO, HO (Halbverband, hat inf aber kein sup)
+
+Verband auf den Kopf stellen => dualer Verband
+
+"Distributivität ist für Verbände sehr starke Eigenschaft (dann ist Programmanalyse viel präziser)"
+
+Verband $$(M, \leq)$$ vollständig wenn für beliebige Teilmenge sup, inf (aus $$M$$!) existieren (für endliche Verbände trivial)
+
+Halbverband + neues Element als sup ist immer Verband
+
+Produkt von Verbänden sind alle n-Tupel Kombinationen
+
+Summe: oberstes Topelemente abschneiden und neues als gemeinsames Top nehmen; genauso mit bottom. 2-Tupel $$(i, x_i)$$ benutzen um Verbände zu nummerieren
+
+In Programmanalyse läuft vieles darauf hinaus, einen Fixpunkt ($$f(x) = x$$) für einen Verband zu berechnen
+
+Satz: In Verband endlicher Höhe hat jede Funktion einen kleinsten Fixpunkt und zwar das sup von f(f(f(fbottom))) oder so
+
+Beispiel: LGS Lösung berechnen
+
+$$\llbracket \rrbracket : N \to V $$ weist CGG-Knoten ein Verbandselement zu
+
+naiver Ansatz rechnet einfach bis sich nix mehr ändert, das ist aber sehr langsam
+
+chaotic iteration: Transferfunktionen einzeln anwenden. Weil dann spätere Funktionen schon bessere Werte von vorher bekommen, bevor eine Epoche rum ist. Ist aber immernoch langsam
+
+Worklist-Algorithmus:
+
+```
+x1 = bot; . . . xn = bot;
+// Worklist q (wie Queue)
+q = [v1, . . . , vn];
+while (q != []) {
+    assume q = [vi , . . . ]; // vi aus q nehmen. normalerweise hängt f_i nur vom vorherigen Knoten ab
+    y = fi (x1, . . . , xn); // neuen Wert ausrechnen
+    q = q.tail();
+    if (y != xi ) { // wenn verschieden, dann müssen Nachfolger auch neu berechnet werden
+        for (v in succs(vi ))
+        {
+            q.append(v);
+        }
+        xi = y;
+    }
+}
+```
+
+Zyklen machen Konvergenz langsamer. Beschleunigung: Bei geschachtelten Schleifen stabilisiert man erst die Schleife und geht dann erst außerhalb
+
+[Galois-Verbindungen, Begriffsverbände weggelassen]
+
+X dominiert Y, wenn jeder Pfad von Y über X geht. z.b. loop-begin dominiert immer loop-body
+
+
+
+22.6.16
+
+# S537
+
+Man kann sich vorstellen der Kreis gibt eine Variable an:
+
+- oranger Kreis ist kompletter Wertebereich (zb 2^64 bei `int`)
+- weißer Kreis ist Werte die die Variable in allen denkbaren Programmläufen annehmen kann
+
+Generell sind Eigenschaften unentscheidbar (Satz von Rice)
+
+Compiler muss überapproximieren (konservativ approximieren), da sonst Programme nicht funktionieren
+
+
+
+# S541
+
+CFG ist konservative Approximation
+
+Korrektsheitbedingung: Jeder vom Programm durchlaufene Pfad muss im CFG möglich
+
+Darf aber zu viele haben => überapproximiert
+
+Natürlich möglichst wenig => hohe Präzision (für 1-Ein-Ausgang Sachen sind sie präzise)
+
+# S542
+
+Dominanz = von Start zu Y, Postdominanz = von X nach End
+
+# S543
+
+Gute Aufgabe
+
+# S544
+
+direkte Dominatoren sind meisten direkte Vorgänger (wann nicht: z.b. Diamantstruktur s Beispiel C-D-E-F)
+
+# S545
+
+
+# bis S552
+
+Schleifen, etc. aus CFG rekonstruieren: Dominanzbaum von Schleifenaustrittspunkt rückverfolgen bis zum Dominator (oder so, Stichwort Intervallanalyse?)
+
+GOTO-Elimination möglich, ist aber hässlich
+
+# S553
+
+Dominatoren für alle Knoten ausrechnen => Gleichungssystem mit sovielen Gleichungen wie Knoten. Lösen mit Fixpunkt
+
+# S554 - 564
+
+übersprungen
+
+# S567
+
+u1, u2, u3 sind Konstanten
+
+Auf Datenflussanalyse bauen viele andere Analysen auf
+
+# S572
+f_B (im Compilerbau genannt Transferfunktionen) bildet von Potenzmenge auf Potenzmenge ab. Es überlebt der Teil der nicht gekillt wird, logischerweise
+
+Struktur des Gleichungssystem hängt nur vom Graphen ab, der Verband und die Transferfunktionen hängt nur vom Analyseproblem ab
+
+für Potenzmengen eignen sich Bitvektoren super (effizient wg. bitweisem AND und OR) s S576
+
+# S574
+
+15 Minuten dafür...
+
+# S575
+
+bottom ist leere Menge ist Unwissen
+
+in der Praxis rechnet man Elemente in der Mitte zwischen bottom und top aus
+
+
+
+23.6.16
+
+# S584
+
+Wieso ist Konstantenpropagation nicht distributiv?
+A: Kann keine Algebra
+
+Beispiel mit y = x*x
+
+586 Satz von Kam/Ullman: Fixpunktiteration liefert genau sup von den unendlich möglichen Pfaden zu s. Beweis ist 4 Seiten "den bring ich nie mehr in der Vorlesung" "da waren am Ende dann alle eingeschlafen"
+meet (= sup auf Englisch) over all parts - MOP
+
+Gödelnummer ist Kodierung des Programmtextes (also einfach der komplette ASCII-Bitstring als Zahl interpretiert)
+
+Was ist intra-/interprozedural? Was ist besser? Wie kann man die Aufrufstellen unterscheiden?
+
+
+- ganz einfach: inlining (aber bläht Code auf und geht nicht bei Rekursion)
+
+591
+
+- mit Callgraph
+    - Kante Call -> Ret für Seiteneffekte
+    - Kontexte: Call Strings (wie Stack Frames)
+    - (Funktional nicht behandelt)
+
+Def. Kontextproblem? [Konstantenpropagation]
+
+Wieso Call String Länge begrenzen?
+A: Damits schneller ist, und diminishing returns. Wird kaum gemacht
+
+
+Wie findet man sich gegenseitig rekursiv-aufrufende Funktionen? => alle stark-zusammenhängenden Komponenten in Callgraph finden
+
+
+
+[...]
+
+6.7.16
+
+628
+
+- **Gute Übungsaufgabe**
+- Alle Definition dominieren jede Verwendung
+- Phi-Funktionen sind da, wo SSA-Variable nicht dominiert
+    - = Dominanzgrenzen
+- 2a. Keine Phi-Funktion für a, weil nur 1 Definition von a
+- 2d. iterierte Dominanzgrenzen, die dritte Funktion kommt durch die anderen beiden zustande
+
+629 Aus AST kann CFG und Phi-Funktion direkt berechnet werden (Dominanzgraph braucht man nicht)
+
+bis 659 übersprungen
+
+660 Allgemeine Beschreibung von Datenflussanalysen
+
+- Richtung: bei Rückwärtsanalysen sind alle Kanten vertauscht (und dadurch z.B. Vorgänger statt Nachfolger reingeben), sonst kein Unterscheid
+- Wenn Verband auf Kopf steht kann May wie Must aussehen
+    - May: Sichtbare Definitionen. Wenn Def. nicht gekillt wird, *kann sie* jeden Punkt erreichen. Wenn 2 zusammenlaufen muss man vereinigen. Es kann aber auch 2 verschiedene Pfade geben, hängt davon welcher Pfad zur Laufzeit genommen wird.
+        - may: mit  bottom initialisieren
+    - Must: Dominatorberechnung. Dominator *muss* alle Vorgänger dominieren
+        - must: mit top initialisieren
+- 2*2 Einteilung von Verfahren (must, may; forwards, backwards)
+
+663 Unterschied zu "Sichtbare Ausdrücke finden": Menge sind ASTs und nicht Variablen
+
+- Ist Must-Analyse
+
+665 Loop Invariants, Invariant Code Motion
+
+- Alle sichtbaren Definition von Ausdruck sind vor Schleife => ist loop-invariant
+- Ist May-Analyse
+
+668 Induction Variables; Reduction of Strength
+
+- Lieber "ergänze" (und dann gucken ob tot) statt ersetze
+
+670 mit SSA einfach, weil Definition immer dominieren
+
+672 Dead Code = durch konstante boolsche Ausdrücke; hier: dead variables => live variable analysis
+
+- May-Rückwärts-Analyse
+- Man könnte hier noch `i` entfernen und stattdessen `t3` benutzen
+
+
+
+# Informationsflusskontrolle (IFC)
+
+= Finde alle potentiellen Informationslecks (≡ Nichtinferenz)
+
+> Röntgen statt Passkontrolle
+
+(rationale: Zertifikate können gefälscht werden)
+
+
+
+677
+
+Safety
+: Programm macht nichts Schlimmes (killt niemanden) => viel Testen oder Verifikation
+
+Security
+: Dritte können nichts Schlimmes mit dem Programm tun
+
+Confidentiality ist Integrity wo der Verband auf dem Kopf steht
+
+681
+
+- high = geheim
+- low = öffentlich
+- physikalische Seitenkanäle: z.B. Stromverbrauch von Kryptochips beobachten
+
+683 Problem: IFC liefert keine Aussage über Schwere des Lecks. In diesem Fall nur Info, dass User/Passwort stimmt
+
+deswegen 684 deklassifiziere Variable oder 685 markiere boolsche Bedingung als deklassifiziert (aber das passt eher zu Programmverifikation)
+
+687 Information darf nicht nach unten weitergegeben werden (no read up / no write down)
+
+689
+
+- ~l heißt low equivalence
+
+- Programme P und Q
+- In Q kann Angreifer mit Datenflussanalyse gucken, wie die veränderte Variable im Programm macht
+
+7.7.16
+
+688
+
+c steht für command (Nichtinterferenz auch auf einzelene Anweisungen anwendbar)
+
+Allgemeiner Fall oben weggelassen ..
+
+691 cool stuff we want:
+
+- mathematisch bewiesene Korrektheit
+- Präzise Warnungen mit möglichst wenig false-positives
+    - trade-off mit Korrektheit
+    - Lieber nur 80% der Lecks finden, sonst Analyse zu teuer
+        - möglichst wenige Annotations
+- skalierbar
+
+695 Non-standard Typsystem weil Typen nicht int, Tupel, etc sind sondern Sicherheitsstufen (2 Typen: high and low)
+
+high-Variable kann low-Wert zugewiesen werden, weil in (R-VAL) erlaubt ist, dass R-VAL low oder high sein kann + Kombination mit (ASS)-Regel
+
+var und cmd stehen hinten damit man die Aussagen unterscheiden kann
+
+[..gutes Beispiel..]
+
+700 Beweise bissl angeguckt. Stichwort: Induktion über syntaktischen Aufbau
+
+706, 707 weggelassen $$\Huge(\mathcal{Z})$$
 
 
 
 
-# Codeerzeugung
 
 
 
 
+---
 
+---
 
-
-
-
-
-
-
-
-
-
+---
 
 
 # Protokollfragen

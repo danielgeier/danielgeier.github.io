@@ -1,5 +1,6 @@
-Tipps
-=====
+# Protokollfragen
+
+## Tipps
 - kommt immer dran:
     - Mikrofone
     - Vorverarbeitung
@@ -18,8 +19,7 @@ Tipps
         - Satz formulieren, der genau die Frage beantwortet
         - antworten
 
-Intro
-======
+## Intro
 - Def ASR
 - Ist Spracherkennung eher einfach oder schwierig? und wieso?
 
@@ -50,8 +50,7 @@ Intro
         - Wo besser aufloesen? (oberer (lauter) Bereich)
 
 
-Vorverarbeitung
-================
+## Vorverarbeitung
 - Was sind die einzelnen Schritte einer typischen Vorverarbeitung?
 - Alles superdupi erklaeren
 - DFT
@@ -71,14 +70,12 @@ Vorverarbeitung
     - Hinmalen und beschreiben
     - Welche Frequenzen wegschmeißen?
 
-Spracherkennung
-===============
+## Spracherkennung
 - Moegliche Ansaetze erklaeren (det., stoch.) + Schaubild
 - Fundamentalformel mit Bestandteilen erklaeren
     - Was kann man weglassen und wieso?
 
-Akustisches Modell
-==================
+## Akustisches Modell
 - Was wird verwendet?
 - HMM Definition
 - 3 Probleme + Loesungen (Formeln + Algorithmen koennen)
@@ -88,8 +85,7 @@ Akustisches Modell
 - Wieso EM nicht gut?
 - Was fuer kont. HMMs
 
-Sprachmodell
-============
+## Sprachmodell
 - Was nehmen?
 - Wie P(w1w2...wN) schaetzen?
     - Warum nicht direkt?
@@ -99,8 +95,7 @@ Sprachmodell
     - Discounting
     - Interpolation
 
-Suche
-=====
+## Suche
 - zeitsynchron vs asynchron?
 - A*
 - Welche Heuristiken fuer Spracherkennung?

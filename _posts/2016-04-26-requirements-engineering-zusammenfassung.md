@@ -21,7 +21,7 @@ Why?
     - reliably estimate deadlines and costs
     - Rule: more RE = less risk (RE effort is inversely proportional to allowed risk)
     - Question to ask:  How much RE do we need to do until the risk is acceptable?
-- Keep in mind: economic effects are indirect!
+- ❗ Keep in mind: economic effects are indirect!
     - RE as such creates costs only
 
 When building such a system...

@@ -293,3 +293,103 @@ Typ von Übung springt ein
 	- 1 Dimension pro Produkt
 	- Exponential decay für frühere Käufe
 - out-of-sample evalution = auf unbekannten Trainingsdaten evaluieren
+
+# Markovketten
+
+- Zeitschritte ausrechnen mit $$\pi_0 p^n$$
+- Steady states ausrechnen mit LGS ausrechnen $$\pi = \pi p$
+- Markov-Eigenschaft: Aktueller Zustand nur von letztem abhängig
+- recurrent state = man kommt auf jedenfall wieder zum state zurück
+- transient state = man kommt evtl. nicht zurück
+- Kette ist irreducible, wenn alle states recurrent sind
+
+# Gastvortrag
+
+- Probeklausur im ILIAS
+- E-Commerce
+	- Design von Technologien
+		- Recommendersysteme
+	- ökonomische Auswirkungen
+		- Mundpropaganda umsonst? Nein: Preis muss niedrig sein, damit weiterempfohlen wird
+
+## Facebook Paper
+- Posts haben Score berechnet aus Ranking, Bilder, ...
+
+# Recommender Systems
+
+Multi-attribute Utilty Theory bezieht nicht Fehlverarbeitung ein (zB MLA)
+
+## Content-based Recommenders
+no cross-category recommendations
+: z.B. DVD-Spieler, Filme
+
+Cold-start problem
+: Man muss erstmal was kaufen, damits gut funktioniert. Lösung zb Daten kaufen von anderen Shops
+
+## Collaborative Recommenders
+
+..
+
+## Utility-based Recommenders
+- Produkt wird gekauft wenn Nutzen > 0
+- Nutzen = Gewichtete Attribute - Geld
+- Daten auch nutzbar für Produktion: Wie teuer kann ich mein Produkt machen?
+- ein Nachteil: Kunde muss erstmal Präferenzen angeben
+
+## Attribute rauskriegen
+
+AHP, SMART, SWING, TRADEOFF kommen eher aus dem Operations Research - Decision Making
+
+### AHP
+
+Kunde soll immer 2 Attribute vergleichen. Daraus prority matrix berechnen
+
+SMART, SWING, TRADEOFF so ähnlich
+
+### Conjoint Study
+
+
+single utility function, attribute weights, willingness to pay rauskriegen
+
+Schritt 5 evaluate stimuli = empirische Datenerhebung
+
+Latin Squares
+: Nicht alles mit allem (full-factorial), sondern orthogonales System. Alle Kombinationen die man braucht. 2 Attribute als Reihe und Spalte und mit drittem Als latin square befüllen. Bildchen
+
+---
+
+- Wie vergleichen?
+	- A/B Test: Conversion Rate messen
+	- mögl Effekt: Lokale Werbeeffekte (Werbebanner auf dem Times Square, mögliche Lösung: Standort (Handy) miteinbeziehen)
+- *Choice overload* bei zu vielen recs => optimale Anzahl?
+	- Vielleicht besser 1 gute und viele schlechte recs?
+
+
+
+
+
+
+----
+
+## prostate cancer Beispiel
+
+Beispiel für nudging. Informationen werden überbetont (false alarm, unnecessary treatment) oder weggelassen (wer wurde behandelt hat überlebt?).
+
+
+
+
+
+
+
+
+
+
+Research Question p19
+
+pareto-optimale und -nicht-optimale Alternativen vorschlagen. Damit kann man Entscheidungsqualität quantifizieren
+
+produkt mit involvement, dass nicht zu niedrig ist aber auch nicht zu hoch
+
+involvement erhöhen zb: 20% chance dass produkt am ende verlost zu bekommen
+
+durch transparenz ändern sich viele attribute auf einmal => kognitive überforderung

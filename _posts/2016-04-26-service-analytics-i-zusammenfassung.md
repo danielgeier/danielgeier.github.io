@@ -1,11 +1,11 @@
 ---
 layout: post
-title:  "Service Analytics A (SS 2016, Prof. Fromm und Prof. Setzer)"
+title:  "Service Analytics A (SS 2016)"
 date:   2016-04-26 00:00:00 +0100
 categories: posts
 ---
 
-Eine Zusammenfassung zur Vorlesung Service Analytics A (SS2016, Prof. Setzer). Work in progress!
+Gehalten von Prof. Fromm und Prof. Setzer. Work in progress!
 
 # Session 1: Introduction to Service Analytics
 - einfach reinlabern erwünscht
@@ -18,7 +18,7 @@ Eine Zusammenfassung zur Vorlesung Service Analytics A (SS2016, Prof. Setzer). W
 - Automatische Datensammlung => wertvolle Infos
 - Große Datenmengen => Neue Techniken erforderlich
 
-![](analytic-value-escalator.jpg)
+![](../../media/analytic-value-escalator.jpg)
 
 # Session 2: Data Geometry
 Das Hervorheben von descriptive und predictive analytics mit Visualisierungen im Datenraum (zB Cluster, classification boundaries, Regressionsgeraden)
@@ -155,16 +155,14 @@ dann ist der intercept $$a = \bar{Y} - b \bar{X}$$
 Regressionsvektor = Linearkombination von erklärenden Variablen
 
 # Session 4: Grouping & Segmentation
-- Classification:
-    - supervised
-- Clustering:
-    - unsupervised
+- Classification = supervised
+- Clustering = unsupervised bla
     - identifies structure
     - reduces data
 - Applications:
-    - Performance benchmarking: Identify ares of similiar services usage
-    - Marketing: Discover distinct customer bases for targeting
-    - Preprocessing: Compression
+    - Performance benchmarking (Identify ares of similiar services usage)
+    - Marketing (Discover distinct customer bases for targeting)
+    - Preprocessing (Compression)
     - Outlier detection
 - Good Clustering:
     - **Cohesive within clusters, distinctive between clusters**
@@ -178,36 +176,116 @@ Regressionsvektor = Linearkombination von erklärenden Variablen
 
 ## Partitioning approach / Distance-based clustering
 Construct various partitions and then evaluate them by some criterion,
-e.g., minimizing the sum of squared distances to partition-centers
+e.g., minimize sum of squared distances to partition-centers.
 
-S 15
 
 ### k-means
 
-1. Initialize k means (e.g. randomly)
-2. do until clusters don't change:
-    b. Assign each object to nearest mean
-    a. Update k means = centroids of clusters
+```
+C = [k Clustermittelpunkte] (zufällig oder nach Heuristik platziert)
 
-- Sensitive to outliers
-    - => k-medoids (PAM Algorithm)
-        - Uses most centrally located object in cluster
-        - Does not scale
+while c ändern sich noch signifikant:
+    for c in C:
+        S = Alle Punkte, für die c der näheste Mittelpunkt ist
+        c = Mittelpunkt von S
+```
+
+Is sensitive to outliers
+
+=> **k-medoids** (PAM Algorithm)
+    - Uses most centrally located object in cluster
+    - But: expensive, does not scale
+
+![K-Medoids Algorithmus](../../media/k-medoids.svg)
 
 ## Density-based clustering
 Based on connectivity and density functions
 
-Discover clusters of arbitrary shape
-Handle noise
-Useful for outlier detection
+- Arbitrary cluster shape
+- Noise robust
+- Useful for outlier detection
 
 ### DBSCAN (Density-Based Spatial Clustering of Applications)
 
-## Fuzzy clustering
+- $$\epsilon$$ = maximaler Nachbarschaftsradius
+- minPts = Minimale Anzahl Punkte in einer $$\epsilon$$-Nachbarschaft
 
-## Semisupervised, hierarchical clustering
+core point
+: A point $$p$$ is a core point if at least minPts points are within distance $$\epsilon$$ of it (including $$p$$). Those points are said to be directly reachable from $$p$$. No points are directly reachable from a non-core point.
 
-## Hierarchical Clustering
+density-reachable
+: A point $$q$$ is reachable from $$p$$ if there is a path $$p_1, ..., p_n$$ with $$p_1 = p$$ and $$p_n = q$$, where each $$p_{i+1}$$ is directly reachable from $$p_i$$ (so all the points on the path must be core points, with the possible exception of $$q$$).
+All points not reachable from any other point are outliers.
+
+    ![](../../media/dbscan-density-reachable.svg)
+
+density-connected
+: Two points $$p$$ and $$q$$ are density-connected if there is a point $$o$$ such that both $$p$$ and $$q$$ are density-reachable from $$o$$.
+
+    ![](../../media/dbscan-density-connected.svg)
+
+A cluster then satisfies two properties:
+
+1. All points within the cluster are mutually density-connected.
+2. If a point is density-reachable from any point of the cluster, it is part of the cluster as well.
+
+![DBSCAN](../../media/dbscan.svg)
+
+In the diagram, minPts = 4. Point A and the other red points are core points, because the area surrounding these points in an $$\epsilon$$ radius contain at least 4 points (including the point itself). Because they are all reachable from one another, they form a single cluster. Points B and C are not core points, but are reachable from A (via other core points) and thus belong to the cluster as well. Point N is a noise point that is neither a core point nor density-reachable.
+
+#### Algorithm
+1. Arbitrary select a point $$p$$
+
+2. Retrieve all points density-connected from $$p$$ w.r.t. $$\epsilon$$ and MinPts
+
+3. If $$p$$ is a core point, a cluster is formed
+    - Iterate over all density-connected points and extend cluster where appropriate
+    -  If $$p$$ is border point, no more points are reachable from $$p$$
+
+4. Select next (yet untouched) point until all points have been processed
+
+---
+
+---
+
+#### Fuzzy C-Means
+Softe Zuteilung von Punkten zu Clustern (1 Gewicht pro Cluster)
+
+
+#### Semi-supervised Learning
+Suppose that we have a set of n observations. For some of the observations,
+we have both predictor measurements and a response measurement. For
+the remaining observations, we have predictor measurements but no
+response measurement.
+
+Such a scenario can arise if the predictors can be measured relatively
+cheaply but the corresponding responses are much more expensive to
+collect. Examples?
+
+#### Hierarchical Clustering
+Weaknesses:
+
+- "Can never undo what was done previously"
+- Does not scale well
+
+## Optional: On the relationship of clustering and outlier detection
+- Types of outliers: global, local, collective
+- density-based outlier detectoin
+- angle-based outlier factors
+
+## Further Considerations for Clustering
+
+- Partitioning criteria
+    - Single level vs. hierarchical partitioning
+
+- Hierarchical approach
+    - Create a hierarchical decomposition of the objects using some criterion
+    - Typical methods: Diana, Agnes, BIRCH, CAMELEON
+
+- Separation of clusters
+    - Exclusive (e.g., one customer belongs to only one region) vs. non-exclusive (e.g., one document may belong to more than one class (fuzzy sets, etc.)
+
+We primarily considered single-level, exclusive clustering.
 
 
 
@@ -221,12 +299,69 @@ Visual Analytics
     - Human: human flexibility, creativity, and background knowledge
     - Machine: enormous storage and processing capacities
 
-## Technologies for Visual Analytics
+![](../../media/visual-analytics.svg)
+
+## Data Sources
+
+Data Warehouse
+: A “repository of current and historical data of potential interest to managers throughout the organization”.
+
+    - Subject-oriented
+        - Organized by detailed subject (e.g. sales, products, customers)
+        - Only relevant data for decision making support
+    - Integrated
+        - One single repository
+        - One single format for data representation
+    - Time variant (time series)
+        - Contains historical data and allows its daily, weekly, monthly analysis
+        - Not necessarily most current status
+    - Non volatile
+        - Data cannot update the data after it has been entered
+
+Data Lake
+: A less organized source of data.
+
+![](../../media/data-lake.png)
 
 ## Data Visualization Techniques
 
-## Visual Analytics in a Business Context
+- Bar
+- Clustered Bar
+- Pie
+- Mosaic
+- Treemap
+- Histogram
+- KDE
+- Boxplot
+- QQ
+- Radar charts
+- Special: Chernoff Faces
 
+### Visualizing correlation
+
+- Heatmap
+- Scatterplot matrix
+- Wordcloud
+
+
+## Business Dashboards
+
+- Focus on the user
+    - CXO and knowledge worker probably need different information
+- Right Metrics and the Right Visuals
+    - What metrics do the users need to see?
+    - What context does each metric need to make it meaningful? (Target? Variance? Trend? Breakdown by region?)
+    - What is the visual representation that best communicates the metric?
+- Business Purpose
+    - What is the overall business goal of the dashboard?
+    - It should easily be possible to answer "why?"-questions within the same interface
+- Use Sketches, Mockups and Prototypes
+    - Iterate!
+
+Don't use gauges.
+
+- Position of needle does not tell if value is good or bad
+- No (historical) context
 
 
 
@@ -260,11 +395,35 @@ Visual Analytics
 
 
 
+
 # Sequential Analysis & Probabilistic Reasoning
 
+Beispiel mit ATM-Platzierung in Hyderabad
 
+- Stadtgebiet in Quadranten einteilen
+- Statisiken über Quadranten berechnen (Bushaltestellen, demographische Daten, whatev)
+- 26 Features, 10 mit PCA
+- PCs kann man je nach einflussnehmender Features beschreiben (z.B. Stadium, Gaming Zones => "Teenager" Cluster)
 
+Wer kauft Bier und Windeln? => Single Väter
 
+- Kellogs Highschool-Sportler sind zu 75% Müsli-Esser => bewerben
+- aber Durchschnitt ist 90%...
+
+20 => Anki
 
 # Time Series Analysis
+
+# Prüfung
+
+Verfahren gegenüberstellen, wissen wie sie funktionieren. Kein Definitionen auswendig lernen.
+
+PCA bei komplett unkorrelierten Variablen sinnvoll?
+
+Wann besser Spiderplot oder Barplot?
+
+Wie sind bei einer Regression die Prädiktoren im Raum verteilt?
+
+
+
 
