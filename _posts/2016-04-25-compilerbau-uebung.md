@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  "Sprachtechnologie und Compiler Übung (SS 2016, Prof. Snelting)"
+title:  "Sprachtechnologie und Compiler Übung"
 date:   2016-04-26 00:00:00 +0100
 categories: posts
 ---
@@ -95,3 +95,10 @@ kleinsten Fixpunkt") Natürliche Zahlen, (+ n 1) als Funktion, unendlich als Sup
 ## 2 - Datenflussanalyse
 
 2.1 Kann man auch mit top initialisieren und sich von oben annähren? schon, aber dann findet man die größten Fixpunkte, nicht die kleinsten. Aber: das Ergebnis ist bei jedem Schritt richtig, wenn man von bot anfängt dann nur am Ende. D.h. man könnte Analyse in der Mitte abbrechen (Aus Gründen der Zeit oder whatev)
+
+
+# Blatt 13
+
+## Auslagern
+
+einfach nur der Registerdruck oder??

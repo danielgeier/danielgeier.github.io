@@ -103,15 +103,16 @@ int result = ERROR;
 int state = 0;
 
 while (true) {
+    c = next_char();
+
 	if (is_final(state))
 		result = state;
 
-	state = table[state][c];
+    state = table[state][c];
 
 	if (is_error(state))
 		break;
 
-	c = next_char();
 }
 // Gibt letzten Endzustand vor Fehler aus
 // Fehlt: evtl. Eingabe zurücksetzen
@@ -622,7 +623,7 @@ $$LR(k)$$-Grammatik
 ![](../../media/lr-tables.png)
 
 - Achtung: $$v \in V$$ (Tippfehler) [hä ist das jetzt gefixt oder nicht...]
-- $$\vertv\vert \in T^{k-1}$$ vorstellen $$T^{\leq k-1}$$ ist nur Optimierungsgedöns
+- $$\vert v \vert \in T^{k-1}$$ vorstellen $$T^{\leq k-1}$$ ist nur Optimierungsgedöns
 
 ### Praxis
 
@@ -1065,7 +1066,7 @@ Es gibt einen Compiler für Java-Bytecode -> Dalvik aber nicht umgekehrt => Beis
 Umgekehrte polnische Notation
 : Zuerst Operanden dann Operation.
 
-    z.B. a = a + 1 -> a a 1 + =
+    z.B. `a = a + 1` ➔ `a a 1 + =`
 
     Subba für Stackmaschinen
 
@@ -1404,7 +1405,6 @@ while (q != []) {
     }
 }
 ```
-
 Zyklen machen Konvergenz langsamer. Beschleunigung: Bei geschachtelten Schleifen stabilisiert man erst die Schleife und geht dann erst außerhalb
 
 [Galois-Verbindungen, Begriffsverbände weggelassen]
@@ -1645,6 +1645,188 @@ var und cmd stehen hinten damit man die Aussagen unterscheiden kann
 
 706, 707 weggelassen $$\Huge(\mathcal{Z})$$
 
+709 Slicing ist cooler als Typanalyse weil mit Datenflussanalyse
+
+710
+
+(P,R)-sicher
+: was reinkommt darf höchstens so sicher sein wie das, was rauskommt
+
+..
+
+717 übersprungen
+
+719 probabilistische Lecks, z.B. nutzbar für Timing-Attacken
+
+
+13.7.16
+
+[Erste 15 min verpasst]
+Ershov-Prinzip
+: Immer zuerst Operand mit größtem Stackbedarf berechnen. \\
+    Alle Zwischenergebnisse aufheben. dh. für jeden Operand ein Stackeintrag weniger
+
+    Geht halt nur, wenn Operationen kommutativ werden. Deswegen gut aufpassen w.g. overflow und so. Aufpassen tut der Codegenerator aber nicht, das muss der Programmierer machen. Bei Subtraktion Operanden umtauschen für richtige Reihenfolge.
+
+Starkes Normalformtheorem
+: Homogenitätsforderung: Alle Operanden und Operationen können alle Register benutzen. Ist in echt nicht so!
+
+14.7.16
+
+...
+
+BUPM:  Von bottom-up aus jeweils günstigste Instruktion auswählen (die größten Teilbaum eliminiert)
+
+## Registerzuteilung
+
+Registerallokation nimmt mit am meisten Zeit in modernen Compiler
+
+812 Registerklassen (gp, fp, sse, ...) und Adressmodi kann man erst richtig zuteilen, wenn schon Maschinencode generiert wurde
+
+Registerzuteilung früher über Ausdrücke, heute über mehrere Grundblöcke (aufpassen bei Schleifengrenzen). Übers Programm wird das nie gemacht
+
+
+20.7.16
+
+
+Registerdruck
+: Wie viele Register sind an der Stelle dieser Anweisung / dieses Grundblockes belegt
+
+817 primitives Verfahren, wenn nur 2 Register vorhanden (Akku + Hilfsregister): alles in Activation Record schreiben
+
+### Lokale Registerzuteilung mit Freiliste (on the fly)
+
+- Immer nur 1 Block betrachten
+- Je nach Bedarf Register aus Freiliste alloc-en
+- Nach letzter Verwendung free-en
+    - und `STORE` in AR
+    - in ganz alten Compilern `STORE` erst am Ende des Blocks
+- Spillcode erzeugen, wenn Liste leer
+
+(Für jede Registerklasse eigene List)
+
+821 Erweiterungen nicht behandelt, weil: benutzt eh niemand mehr das Zeug
+
+
+### Linear-Scan Register Allocation
+
+relativ neu (neuer als Graphfärbung; man brauchte was günstigeres für JIT)
+
+824 Umgekehrte Postfixordnung liefert topologische Sortierung
+
+Lebende Definition (zb aus DaFluAna) nötig, um Lebenszeitintervalle zu finden
+
+Register mit längstem Lebendigkeitsintervall auslagern (Heuristik: dadurch verschwinden wshl die meisten Konflikte)
+
+
+### Graphfärben
+
+optimal, aber NP-vollständig.
+
+gute Heuristiken
+
+alles in SSA => Graphfärben trivial (made in KA)
+
+Kanten geben Konflikte zwischen Anweisungen an "Keine Kanten der Liebe, sondern Kanten des Krieges!"
+
+Maximaler Registerdruck ist an wenigen Stellen maximal
+
+830 1 Knoten mit 7 Kanten, Rest weniger
+
+Welchen Knoten entfernen? Empirisch einfach irgendeinen aus denen mit den meisten Kanten kleiner gleich k
+
+832 IG-Bauen = Interferenzgraph bauen
+
+833 Bei Grad = genau k kann man das machen, aber wenn Grad > k dann wird die Hoffnung schnell klein, das es doch noch klappen könnte
+
+834 - 837 übersprungen
+
+#### Registerzuteilung mit Graphfärbung (nach Hack/Goos)
+
+840 Beim Untergraph nimmt man immer alle Kanten in der Untermenge der Knoten, Beim Teilgraph sind nicht alle Kanten drin
+
+843 Jeder Zyklus größer 3 muss eine Sehne enthalten
+
+Der letzte ist nicht chordal (Ecken als Untergraph haben Zyklus 4)
+
+844 SSA-IGs sind chordal, bäääm
+
+wieso? in SSA gibt es keine Lücken in Lebendigkeitsintervallen. Eine Lücke wäre genau eine fehlende Sehne, die zu einem Zyklus führt
+
+bis 855 weggelassen (eigentlicher Färbalgo und so nicht wichtig, sondern Prinzip)
+
+856 k-färbbar mit k = Registerdruck, deswegen bei Programmstellen mit Registerdruck > Registerzahl auslagern. Also kann man Spillcode gleich am Anfang überzeugen und weiß, dass es k-färbbar sein wird. Geht nur bei chordalen Graphen
+
+861 Standardverfahren: im Vorgängerblock zusätzliche Kopien anlegen In Spezialfällen braucht man ein Hilfsregister, aber das geht bei zu großem Registerdruck ja nicht
+
+865 man kann auch Registerpermutationen in FPGAs machen, wenn man Bock hat
+
+bis 876 übersprungen
+
+
+### Befehlsanordnung
+
+Besser vor oder nach Registerallokation? Weiß man nicht wirklich
+
+Befehle so anordnen, dass Pipeline-Interrupts und Cache-Misses verhindert werden
+
+RAW, WAR, WAW Abhängigkeiten (bei Data-Races die gleichen Abhängigkeiten in nebenläufiger Form)
+
+`mov`-Befehle möglichst weit nach vorne ziehen, damit Daten da sind, wenn si weiterverarbeitet werden
+
+884 Standardalgo für topologische Sortierung
+
+885 Den Befehl nehmen, der am nähesten an den 3 Kriterien ist
+
+887 `mov`-Befehle nach vorne ziehen:
+
+- gut: Pipeline-Interrupts verhindern
+- schlecht: Registerverbrauch steigtf
+
+889 Beispiel bei Software-Pipelining: Man macht Loop-Unrolling und ordert danach die Befehle um. Bei mehreren Schleifen muss man die *loop carried dependencies* beachten, man kann aber trotzdem ausrollen
+
+890 Man macht quasi aus der for-Schleife eine do-while-Schleife mit einem einmaligen Sprung zum Ende der Schleife(/zum Schleifenkopf/-schwanz)
+
+### Peephole-Optimierung
+
+892 Mit BURS und co nicht mehr sooo relevant
+
+Die Beispiele sind ein bisschen bescheuert, aber frühere Compiler haben so einen Code erzeugt. Heutige auch noch, wenn man erst Registerallokation macht und dann Spillcode erzeugt
+
+### Generatoren
+
+Eingabe = Maschinenbeschreibung + Baumregeln
+
+897 898 $$\Huge(\mathcal{Z})$$
+
+### JIT
+
+902
+
+- AOS Database
+    - Dynamische Messwerte des Systems / Schwellwerte für Optimierungen
+- noch mehr erklärt, aber ich hab nicht so zugehört (damit endet das Semester so, wie es angefangen hat)
+
+---
+
+---
+
+---
+
+that's it
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -1660,6 +1842,13 @@ var und cmd stehen hinten damit man die Aussagen unterscheiden kann
 
 
 # Protokollfragen
+
+- Info aus der letzten Vorlesung:
+    - Lexikalische Analyse kommt nicht dran
+    - Alles über das geredet wurde kommt dran
+        - Syntaxanalyse, DaFluAna kommt eher häufiger dran, AG eher seltener
+    - wenn über Z länger geredet wurde kanns schon dran kommen, wenn "nur, damit mans mal gesehen hat" dann nicht
+
 
 TODO: Transformation, Codegen, Opt Fragen rausschreiben
 

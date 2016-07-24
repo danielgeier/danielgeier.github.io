@@ -1,9 +1,15 @@
 ---
 layout: post
-title:  "Maschinelles Lernen 1 (WS15/16, Prof. Dillmann und co)"
+title:  "Maschinelles Lernen 1"
 date:   2016-02-29 00:00:00 +0100
 categories: posts
 ---
+
+```
+x = x
+```
+
+Dozent: Prof. Dillmann, Prof. Zöllner
 
 <div style="display: none;">
 $$
@@ -177,7 +183,13 @@ Menge von Trainingsbeispielen D ist die Untermenge der Hypothesen von H,
 die mit den Trainingsbeispielen in D konsistent ist.“
 
 #### Candidate Elimination Algorithm
-```
+
+`watup`
+
+    x = 1;
+    2 = 2;
+
+```c
 S = {#} // Spezifischste Hypothese
 G = {?} // Generellste Hypothese
 

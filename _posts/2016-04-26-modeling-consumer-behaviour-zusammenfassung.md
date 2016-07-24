@@ -1,9 +1,11 @@
 ---
 layout: post
-title:  "Modeling and Analyzing Consumer Behaviour with R (SS 2016, Dr. Dorner)"
+title:  "Modeling and Analyzing Consumer Behaviour with R"
 date:   2016-04-26 00:00:00 +0100
 categories: posts
 ---
+
+Dozentin: Dr. Verena Dormer
 
 Übung wird verschoben auf Dienstag 17:30
 
@@ -393,3 +395,13 @@ produkt mit involvement, dass nicht zu niedrig ist aber auch nicht zu hoch
 involvement erhöhen zb: 20% chance dass produkt am ende verlost zu bekommen
 
 durch transparenz ändern sich viele attribute auf einmal => kognitive überforderung
+
+
+
+
+# V9
+
+19
+
+Word-of-mouth: An welchen Knotenpunkt schicke ich was, damit es viral wird?
+

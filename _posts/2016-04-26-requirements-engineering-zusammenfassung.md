@@ -1,11 +1,13 @@
 ---
 layout: post
-title:  "Requirements Engineering (SS 2016, Jun.-Prof. Koziolek)"
+title:  "Requirements Engineering"
 date:   2016-04-26 00:00:00 +0100
 categories: posts
 ---
 
-Zusammenfassung für Req Eng. Work in progress.
+Dozentin: Dr. Koziolek
+
+Work in progress.
 
 # Fundamentals
 
@@ -21,7 +23,7 @@ Why?
     - reliably estimate deadlines and costs
     - Rule: more RE = less risk (RE effort is inversely proportional to allowed risk)
     - Question to ask:  How much RE do we need to do until the risk is acceptable?
-- ❗ Keep in mind: economic effects are indirect!
+- ❗ Keep in mind: economic effects are indirect
     - RE as such creates costs only
 
 When building such a system...
@@ -160,7 +162,7 @@ Context models
 High-level real world reqs have to be mapped to more low-level system reqs (that assume domain properties).
 
 The requirements problem (Jackson)
-: Given a machine satisfying the specification $S$ and assuming that the domain properties $D$ hold, the requirements $R$ in the world must be satisfied: $S \wedge D \vdash R$.
+: Given a machine satisfying the specification $$S$$ and assuming that the domain properties $$D$$ hold, the requirements $$R$$ in the world must be satisfied: $$S \wedge D \vdash R$$.
 
 ### Intertwining of goals, requirements, and design
 Waterfall does not work well. Requirements and design can't be seperated.
@@ -175,7 +177,7 @@ Waterfall does not work well. Requirements and design can't be seperated.
 ##### "What" vs. "How"
 
 - Context-dependent => useless distinction
-- Distinguish operationally
+- Instead, distinguish operationally
     - Statement owned by stakeholder (change requires approval from stakeholder)?
         - => It's a req
     - Statement owned by supplier (supplier may change freely)?

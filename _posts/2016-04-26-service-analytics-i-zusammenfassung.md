@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  "Service Analytics A (SS 2016)"
+title:  "Service Analytics A"
 date:   2016-04-26 00:00:00 +0100
 categories: posts
 ---
@@ -270,7 +270,7 @@ Weaknesses:
 
 ## Optional: On the relationship of clustering and outlier detection
 - Types of outliers: global, local, collective
-- density-based outlier detectoin
+- density-based outlier detection
 - angle-based outlier factors
 
 ## Further Considerations for Clustering
@@ -424,6 +424,128 @@ Wann besser Spiderplot oder Barplot?
 
 Wie sind bei einer Regression die Prädiktoren im Raum verteilt?
 
+Was ist Kohärenz? Wie kann man Vektoren vergleichen?
+
+Mindestens 2-3 Aufgaben werden von Daten-Geometrie und Regression handeln
 
 
+# Wrap-up
 
+16 LARS: Am stärksten korrelierten Prädiktor nehmen und so hoch gewichten, dass der nächste Prädiktor gerade stärker mit der Zielvariable korreliert ist (einen flacheren Winkel hat) usw. [kommt nicht in der Klausur dran]
+
+Cluster analysis, k-Means und DBSCAN: Was passiert wenn ich den Parameter verstelle?
+
+18 Grundsätzlicher Gedanke kennen (inkl Feedback-Loops), Chernov Faces und andere Visualisierungen anschauen. Was führt bei welchen Visualisierungen zu Verzerrungen?
+
+20 Kriterien für margin anschauen (aber kein soft margin, annehmen dass Daten separierbar sind). Was ist purity, impurity?
+
+22 bag-of-words, pro/cons von den Ähnlichkeiten
+
+23 Unit 8 prozone, "nicht so klausurrelevant"
+
+
+##### Aufgabe 1. Daten-Geometrie (5 Punkte)
+
+Erklären Sie in 2-3 Sätzen: Warum entspricht das Skalarprodukt der
+Vektor-Repräsentationen zweier Variablen nicht deren Korrelation, wenn
+die Vektoren zuvor nicht auf die Norm von 1 standardisiert wurden?
+
+A: Argumentation über Korrelationformel oder auch: was ist denn wenn ein Vektor sehr groß ist? Noch anders: Wenn wir eine Korrelation zw. 2 Variablen haben dann kann man die Vektoren nach oben skalieren und dabei ändert sich auch die Korrelation.
+
+##### Aufgabe 2. Regressionsräume (7 Punkte)
+
+Sie haben 20 linear unabhängige Variablen mit jeweils 20 Beobachtungen.
+Wie hoch ist die Dimensionalität von deren Regressionsraum? Erläutern
+Sie kurz: Was ist die Gefahr, wenn Sie mit den 20 Variablen eine weitere
+Variable über ein multiples lineares Regressionsmodell erklären wollen?
+
+A: 20 ist die Dimensionalität des Regressionsraums, weil Variablen unabhängig. Gefahr: Die neue Variable ist linear abhängig sein weil mehr Variablen als Beobachtungen ➔ maximales overfitting.
+
+##### Aufgabe 3. Distanzen (8 Punkte)
+
+Angenommen, Sie wollen die Ähnlichkeit zwischen Objekten mit
+ausschließlich binär-kodierten Variablen (Geschlecht, Wohnhaft in
+Großstadt, hat Produkt X gekauft, ...) vergleichen. Welche Distanzmaße
+oder Ähnlichkeitsmaße haben Sie hierfür in der Vorlesung kennengelernt?
+Grenzen Sie diese Maße bitte voneinander ab, entweder verbal oder über
+eine formale Darstellung.
+
+A: s. Folien
+
+##### Aufgabe 4. Dimensionsreduktion (5 Punkte)
+
+Die Vektor-Repräsentationen von fünf Objekten im Variable-Space liegen
+geometrisch auf einer Ebene. Sie führen eine Principal Component
+Analyse durch. Wie hoch ist der Anteil der erklärten Varianz durch die 3.,
+4., und 5. Komponente? Erläutern Sie Ihre Antwort kurz verbal.
+
+A: Null, weil alle Objekte auf einer Ebene liegen (➔ zwei Dimensionen zum erklären notwendig).
+
+##### Aufgabe 5. Clustering (6 Punkte)
+
+Sie verwenden das Dichte-basierte Clustering-Verfahren DBSCAN in einer
+Standard-Konfiguration. Angenommen Sie verdoppeln den Parameter
+Epsilon-Umgebung und halbieren gleichzeitig den Parameter MinPoints.
+Finden Sie damit dann die gleichen Cluster wie zuvor oder eventuell
+andere Cluster? Erläutern Sie bei Ihrer Antwort auch kurz die Bedeutung
+der beiden Parameter.
+
+A: Erstmal Parameter erklären. Man bekommt größere Cluster raus [und ich denk mal vereinzelt auch kleinere, wo sonst keine gewesen wären].
+
+##### Aufgabe 6. Klassifikation (7 Punkte)
+
+Sie haben in der Vorlesung Maximum Margin Classifier kennengelernt.
+Erläutern Sie, gegebenenfalls auch unterstützt durch eine Skizze: Was
+versteht man unter einer Margin, und warum ist es vorteilhaft, diese beim
+Lernen eines Classifiers zu maximieren?
+
+A:
+
+##### Aufgabe 7. Text Mining (5 Punkte)
+
+Bitte erläutern Sie: Was versteht man unter der Kosinus-Ähnlichkeiten von
+Dokumenten, und wie kann man diese nutzen um Dokumente zu
+gruppieren?
+
+A:
+
+##### Aufgabe 8. Entscheidungsbäume (5 Punkte)
+
+Erläutern Sie den Zusammenhang zwischen Entropie und Unsicherheit. In
+welcher Beziehung stehen die Begriffe Entropie und Information Gain
+beim Lernen von Entscheidungsbäumen? Erläutern Sie Ihre Antwort und
+gehen Sie dabei auf die formale Definition von Information Gain ein.
+
+A:
+
+##### Aufgabe 9. Probabilistische Netze (6 Punkte)
+
+Drei Variablen sind jeweils paarweise hoch korreliert, also abhängig. Ist es
+möglich, dass zwei der Variablen bedingt unabhängig sind, wenn der Wert
+der dritten Variable bekannt ist? Falls ja, welche Hypothese treffen
+Bayesian Networks dann über die kausale Beziehung der drei Variablen?
+Erläutern Sie Ihre Antwort kurz.
+
+A:
+
+##### Aufgabe 10. Zeitreihenanalyse (6 Punkte)
+
+Was versteht man unter dem Begriff Autokorrelation? Warum spielt
+Autokorrelation in der Zeitreihenprognose eine große Rolle und wie kann
+Autokorrelation zur Autoregression genutzt werden? Erläutern Sie in Ihrer
+Antwort auch den grundsätzlichen Unterschied zwischen zeitlich
+strukturierten Daten und solchen ohne Zeitbezug, was die Prognose
+zukünftiger Werte angeht.
+
+A:
+
+##### Bonusaufgabe. Probabilistische Netze ( 6 Punkte)
+
+Was versteht man im Kontext von Bayesian Network unter einer
+Conditional Probability Table? Warum ist diese Tabelle oftmals sehr viel
+kleiner als eine Tabelle mit allen Joint Probabilities, und was verrät uns der
+Größenunterschied über die Struktur der Zusammenhänge in den Daten?
+
+A:
+
+Anstatt der Bonusaufgabe hier kommt wahrscheinlich eine zu Basket/Sequence Analysis

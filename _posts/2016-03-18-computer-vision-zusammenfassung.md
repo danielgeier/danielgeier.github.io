@@ -1,9 +1,11 @@
 ---
 layout: post
-title:  "Computer Vision for Human-Computer Interaction (WS15/16, Prof. Stiefelhagen)"
+title:  "Computer Vision for Human-Computer Interaction"
 date:   2016-03-17 00:00:00 +0100
 categories: posts
 ---
+
+Dozent: Prof. Stiefelhagen und andere
 
 Einführung
 ==============================
